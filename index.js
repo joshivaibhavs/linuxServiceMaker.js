@@ -36,7 +36,7 @@ const getAppNameAndTemplate = args => {
             throw new Error('Invalid distribution. Please provide Ubuntu or RedHat')
     }
     const template = `[Unit]\nDescription=${appName}\n[Service]\nExecStart=${matchDir}/${entryPoint}\nRestart=always\nUser=nobody\nGroup=${group}\nEnvironment=PATH=/usr/bin:/usr/local/bin\nEnvironment=NODE_ENV=production\nWorkingDirectory=${matchDir}\n[Install]\nWantedBy=multi-user.target`
-    return { template, appName, matchDir }
+    return { template, appName, matchDir, entryPoint }
 }
 
 const parseArgs = () => {
@@ -51,7 +51,7 @@ const parseArgs = () => {
     return args
 }
 
-const printInstructions = (appName, matchDir) => {
+const printInstructions = (appName, matchDir, entryPoint) => {
     const instructions = `
 Congratulations. Your service file (${appName}.service) is ready in the directory:
 ${matchDir}
@@ -73,6 +73,11 @@ sudo systemctl stop ${appName}
 To view logs:
 sudo systemctl status ${appName}
 
+Make sure you have a shebang (#!/usr/bin/env node) in ${entryPoint}
+and the entry point has executable permission:
+
+chmod +x ${entryPoint}
+
 Thank you for using linuxServiceMaker.`
     console.log(instructions)
     return
@@ -90,9 +95,9 @@ const main = () => {
             return console.log(manual)
         }
         const updatedArgs = updateArgs(args)
-        const { appName, template, matchDir } = getAppNameAndTemplate(updatedArgs)
+        const { appName, template, matchDir, entryPoint } = getAppNameAndTemplate(updatedArgs)
         fs.writeFileSync(`${matchDir}/${appName}.service`, template)
-        printInstructions(appName, matchDir)
+        printInstructions(appName, matchDir, entryPoint)
     } catch (err) {
         return console.log(err.message)
     }
