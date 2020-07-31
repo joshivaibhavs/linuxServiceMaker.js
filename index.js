@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const os = require('os')
 const fs = require('fs')
 
@@ -91,7 +92,7 @@ const main = () => {
     try {
         const args = parseArgs()
         if (!!args.h || !!args.help) {
-            const manual = fs.readFileSync('manual').toString()
+            const manual = fs.readFileSync('manual.1').toString()
             return console.log(manual)
         }
         const updatedArgs = updateArgs(args)

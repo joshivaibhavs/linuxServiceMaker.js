@@ -1,6 +1,6 @@
 {
   "name": "linux_service_maker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A script to generate a background service of your node app",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "bin": {
     "linuxServiceMaker": "./index.js"
   },
-  "man": "./manual",
+  "man": "./manual.1",
   "author": "VaibhavJoshi",
   "license": "MIT"
 }
