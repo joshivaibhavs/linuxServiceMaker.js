@@ -1,4 +1,4 @@
-A node package for running your backend as a background service on Linux
+exports.manual = `A node package for running your backend as a background service on Linux
 
 Note: the arguments are passed in the following format:
 <command> <argument>=<value>
@@ -22,3 +22,4 @@ char  | full argument    | Description
 
 example command:
 linuxServiceMaker n=MyApp e=index.js f=Ubuntu
+`

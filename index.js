@@ -2,8 +2,10 @@
 const os = require('os')
 const fs = require('fs')
 
+const { manual } = require('./man')
+
 const updateArgs = args => {
-    if (!args.d && !args.directory) args.d = __dirname
+    if (!args.d && !args.directory) args.d = process.cwd()
     if (!args.n && !args.name) {
         throw new Error('Provide a name=AppName argument')
     }
@@ -92,7 +94,6 @@ const main = () => {
     try {
         const args = parseArgs()
         if (!!args.h || !!args.help) {
-            const manual = fs.readFileSync('manual.1').toString()
             return console.log(manual)
         }
         const updatedArgs = updateArgs(args)
