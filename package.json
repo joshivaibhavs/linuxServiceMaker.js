@@ -1,6 +1,6 @@
 {
   "name": "linux_service_maker",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A script to generate a background service of your node app",
   "main": "index.js",
   "scripts": {
