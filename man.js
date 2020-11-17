@@ -20,6 +20,9 @@ char  | full argument    | Description
 
 * Name must contain only characters, numbers and underscores
 
+You can provide environment variables in lsm.env file.
+Put the file in the same directory as the entry point.
+
 example command:
 linuxServiceMaker n=MyApp e=index.js f=Ubuntu
 `

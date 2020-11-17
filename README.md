@@ -1,4 +1,4 @@
-A basic command line tool to create a `.service` file for Node.js backend app. 
+A basic command line tool to create a `.service` file for Node.js backend app.
 
 This allows you to run your app without blocking the terminal.
 
@@ -15,9 +15,12 @@ The .service file is created following `@mikemaccana`'s <a href="https://stackov
 https://stackoverflow.com/questions/4018154/how-do-i-run-a-node-js-app-as-a-background-service/29042953
 
 According to him,
->forever, monit, PM2, etc are no longer necessary - your OS already handles these tasks.
 
+> forever, monit, PM2, etc are no longer necessary - your OS already handles these tasks.
 
 To report issues/bugs go to:
 
 https://github.com/joshivaibhavs/linuxServiceMaker.js/issues
+
+New feature:
+Set environment variables in lsm.env file (See help for more info)
