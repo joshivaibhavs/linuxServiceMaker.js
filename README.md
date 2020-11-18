@@ -22,5 +22,7 @@ To report issues/bugs go to:
 
 https://github.com/joshivaibhavs/linuxServiceMaker.js/issues
 
-New feature:
-Set environment variables in lsm.env file (See help for more info)
+New features:
+Set environment variables in lsm.env file
+Set username and groupname to run the process as that user
+Run `linuxServiceMaker help` for more info

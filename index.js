@@ -12,15 +12,23 @@ const updateArgs = (args) => {
   if (!args.e && !args.entry) {
     throw new Error('Provide an entry=entryPoint.js argument');
   }
-  if (!args.f && !args.distro) {
-    throw new Error(
-      'Provide a distribution=distro argument [either of Ubuntu or Redhat]'
-    );
+  if (args.user) args.u = args.user;
+  if (args.group) args.g = args.group;
+  if (!args.u && !args.g) {
+    if (!args.f && !args.distro) {
+      throw new Error(
+        'Provide a distribution=distro argument [either of Ubuntu or Redhat]'
+      );
+    }
   }
   return args;
 };
 
 const getAppNameAndTemplate = (args) => {
+  if (args.u && !args.g)
+    throw new Error('Group is not provided along with User');
+  if (args.g && !args.u)
+    throw new Error('User is not provided along with Group');
   const matchDir = args.d || args.directory,
     appName = args.n || args.name,
     entryPoint = args.e || args.entry,
@@ -47,25 +55,28 @@ const getAppNameAndTemplate = (args) => {
       .map((v) => `Environment=${v.trim()}`)
       .join('\n');
   let group;
-  switch (distro.toLowerCase()) {
-    case 'ubuntu':
-      group = 'nogroup';
-      break;
-    case 'redhat':
-      group = 'nobody';
-      break;
-    default:
-      throw new Error('Invalid distribution. Please provide Ubuntu or RedHat');
+  if (!args.u || !args.g) {
+    switch (distro.toLowerCase()) {
+      case 'ubuntu':
+        group = 'nogroup';
+        break;
+      case 'redhat':
+        group = 'nobody';
+        break;
+      default:
+        throw new Error(
+          'Invalid distribution. Please provide Ubuntu or RedHat'
+        );
+    }
   }
-  const template = `
-[Unit]
+  const template = `[Unit]
 Description=${appName}
 
 [Service]
 ExecStart=${matchDir}/${entryPoint}
 Restart=always
-User=nobody
-Group=${group}
+User=${args.u || 'nobody'}
+Group=${args.g || group}
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production${envVars ? `\n${envVars}` : ''}
 WorkingDirectory=${matchDir}
@@ -76,10 +87,7 @@ WantedBy=multi-user.target`;
 
 const parseArgs = () => {
   const argsLs = process.argv.slice(2);
-  if (argsLs.length === 0)
-    throw new Error(
-      'Please provide h or help argument to see help. (linuxServiceMaker help)'
-    );
+  if (argsLs.length === 0) return { h: true };
   const args = {};
   argsLs.forEach((arg) => {
     if (arg === 'h' || arg === 'help') return (args[arg] = true);
